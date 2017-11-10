@@ -28,8 +28,8 @@ urlpatterns = [
     url(r'^change_password/$', change_password, name='change_password'),
     url(r'^$', home.as_view()),
     url(r'^grievances/$', grievances.as_view(), name="grievances"),
-    url(r'^activate/(?P<rhash>[0-9A-Za-z]+)/?$',
-        activateuser.as_view(), name='activation_link'),
+    url(r'^activate/$', activateuser.as_view(), name = "activate"),
+
     url(r'^user/(?P<uname>[\w+]+)/?$', profilepage.as_view()),
     url(r'^confirmemail/?$', confirmemail.as_view()),
     url(r'^forgotpassword/?$', forgot_password.as_view()),

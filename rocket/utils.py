@@ -44,7 +44,7 @@ def send_confirm_email(user_object):
     message, unique_hash = prepare_message(fname, lname, mailid)
     subject = 'Confirm your email ID | Rocket'
     #send_mail(subject, message, MAIL_ID, [mailid], False)
-    user_activation_cache.objects.create(user=user, unique_hash=unique_hash)
+    user_activation_cache.objects.create(user=user_object, unique_hash=unique_hash)
 
 
 def prepare_message(fname, lname, mailid):

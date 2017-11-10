@@ -7,6 +7,7 @@ from rocket.forms import EditProfileForm, UplaodImageForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.views.generic import TemplateView
+from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from .models import (
     Postform,
@@ -83,6 +84,7 @@ class signup(TemplateView):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
+            id=user.id
             try:
                 Userprofile.objects.create(
                     user=user, bio=form.cleaned_data['bio'], entryno=entrynum)
@@ -90,7 +92,7 @@ class signup(TemplateView):
                 raise
                 # return HttpResponseRedirect('/signup')
             utils.send_confirm_email(user)
-            return HttpResponseRedirect('/confirmemail')
+            return HttpResponse("for activation go through http://127.0.0.1:8000/activate/?id=%s" %(id))
 
         else:
             return HttpResponseRedirect('/signup')
@@ -98,18 +100,12 @@ class signup(TemplateView):
 
 class activateuser(TemplateView):
 
-    def get(self, request, rhash):
-        url_hash = rhash
-        try:
-            user_activate = user_activation_cache.objects.get(
-                unique_hash=url_hash)
-        except Exception as e:
-            return HttpResponse('There is problem %s' % e)
-        user_activate.user.is_active = True
-        user_activate.user.save()
-        user_activate.save()
-        user_activation_cache.objects.filter(unique_hash=url_hash).delete()
-        return HttpResponse('Activated sucessfully %s' % url_hash)
+    def get(self, request):
+        id=int(request.GET.get('id'))
+        user = User.objects.get(id=id)
+        user.is_active=True
+        user.save()
+        return render(request,'rocket/activation.html')
 
 
 class logout(TemplateView):

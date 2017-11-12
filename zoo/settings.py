@@ -78,7 +78,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'supreme',
-        'USER': 'sandeep',
     }
 }
 

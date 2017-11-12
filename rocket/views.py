@@ -92,7 +92,8 @@ class signup(TemplateView):
                 raise
                 # return HttpResponseRedirect('/signup')
             utils.send_confirm_email(user)
-            return HttpResponse("for activation go through http://127.0.0.1:8000/activate/?id=%s" %(id))
+            base =request.META['HTTP_HOST']
+            return HttpResponse("for activation go through %s/activate/?id=%s" %(base,id))
 
         else:
             return HttpResponseRedirect('/signup')
